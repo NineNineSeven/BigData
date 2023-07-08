@@ -6,8 +6,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>mp.hadoop.project</groupId>
-  <artifactId>template</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <artifactId>final</artifactId>
+  <version>1</version>
 
   <name>template</name>
   <description>Template Project for Hadoop</description>
@@ -47,6 +47,7 @@
   </dependencies>
 
   <build>
+    <finalName>Final</finalName>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to
       parent pom) -->
       <plugins>
