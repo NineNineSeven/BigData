@@ -9,8 +9,9 @@ import org.apache.hadoop.mapreduce.Reducer;
 public class RVReducer extends Reducer<DoubleWritable, Text, Text, DoubleWritable> {
     @Override
     public void reduce(DoubleWritable rank, Iterable<Text> persons, Context context) throws IOException, InterruptedException {
-        rank.set(-rank.get());
-        for (Text person : persons)
-            context.write(person, rank);
+        double r = rank.get();
+        for (Text person : persons) {
+            context.write(person, new DoubleWritable(-r));
+        }
     }
 }

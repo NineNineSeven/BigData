@@ -10,6 +10,7 @@ mvn clean install
 
 ### Local Single Node Mode
 
+PageRank
 ``` bash
-path/to/hadoop jar path/to/template-1.0-SNAPSHOT.jar wordcount -i input -o output
+path/to/hadoop jar target/Final.jar PR -i input -o output -r repeat-cnt
 ```

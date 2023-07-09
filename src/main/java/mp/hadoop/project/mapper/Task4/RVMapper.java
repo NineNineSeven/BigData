@@ -10,6 +10,8 @@ public class RVMapper extends Mapper<Text, Text, DoubleWritable, Text> {
     @Override
     public void map(Text person, Text link_list, Context context) throws IOException, InterruptedException {
         String[] split = link_list.toString().split("[\\[\\]#|]");
-        context.write(new DoubleWritable(-Double.parseDouble(split[1])), person);
+        System.out.println(person);
+        System.out.println(split[0]);
+        context.write(new DoubleWritable(-Double.parseDouble(split[0])), person);
     }
 }
