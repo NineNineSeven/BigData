@@ -84,9 +84,12 @@ public class Task3 {
             }
             //计算每个人的概率
             for (String name : name_val) {
+                if (ans.equals("") == false){
+                    ans += "|";
+                }
                 String[] name_count = name.split(":");
                 double prob = Double.parseDouble(name_count[1]) / count;
-                ans += "|" + name_count[0] + "," + String.format("%.5f", prob);
+                ans += name_count[0] + "," + String.format("%.5f", prob);
             }
 
             context.write(key, new Text("[" + ans + "]"));
