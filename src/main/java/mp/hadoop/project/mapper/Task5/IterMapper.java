@@ -2,18 +2,10 @@ package mp.hadoop.project.mapper.Task5;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
 
 import mp.hadoop.project.utils.NameParser;
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
-import org.apache.hadoop.mapreduce.Reducer;
-import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
-import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 public class IterMapper extends
         Mapper<Object, Text, Text, Text> {
@@ -25,9 +17,9 @@ public class IterMapper extends
         String name = tuple[0];
         String label = tuple[1];
         ArrayList<NameParser> neighborList = new ArrayList<>();
-        String tmp = tuple[2].substring(1);
-        tmp = tmp.substring(0, tmp.length() - 1);
-        String[] neighbors = tmp.split("\\|");
+        // String tmp = tuple[2].substring(1);
+        // tmp = tmp.substring(0, tmp.length() - 1);
+        String[] neighbors = tuple[2].split("\\|");
         for(String neighbor : neighbors){
             String[] fields = neighbor.split(",");
             String figure = fields[0];

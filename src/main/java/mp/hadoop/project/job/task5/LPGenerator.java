@@ -1,13 +1,9 @@
-package mp.hadoop.project.task5;
-
-import java.io.IOException;
+package mp.hadoop.project.job.task5;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.mapreduce.Mapper;
-import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
@@ -17,7 +13,7 @@ import mp.hadoop.project.reducer.Task5.LPGeneratorReducer;
 public class LPGenerator {
     public static void main(String[] args) throws Exception {
         Configuration conf = new Configuration();
-        Job job3 = new Job(conf, "Generator");
+        Job job3 = Job.getInstance(conf, "Generator");
         job3.setJarByClass(LPGenerator.class);
         job3.setOutputKeyClass(Text.class);
         job3.setOutputValueClass(Text.class);

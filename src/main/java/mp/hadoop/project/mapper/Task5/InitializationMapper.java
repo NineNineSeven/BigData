@@ -1,15 +1,9 @@
 package mp.hadoop.project.mapper.Task5;
 
-import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.Path;
 import java.io.IOException;
 
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
-import org.apache.hadoop.mapreduce.Reducer;
-import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
-import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 public class InitializationMapper extends Mapper<Object, Text, Text, Text> {
     public void map(Object key, Text value, Context context)
@@ -17,7 +11,10 @@ public class InitializationMapper extends Mapper<Object, Text, Text, Text> {
         String[] fields = value.toString().split("\t");
         String name = fields[0];
         String label = name;
-        String val = label + "\t" + fields[1];
+        String tmp = fields[1].substring(1);
+        // String tmp = tuple[2].substring(1);
+        tmp = tmp.substring(0, tmp.length() - 1);
+        String val = label + "\t" + tmp;
         context.write(new Text(name),new Text(val));
     }
 }
