@@ -26,10 +26,18 @@ public class Task1Mapper extends Mapper<LongWritable, Text, Text, Text> {
         //名列表
         //Vector<String> singleNames = new Vector<>();
         Set<String> singleNames = new HashSet<>();
-        Map<String,String> Sec2First = new HashMap<>();
+        Vector<String> nameFrom = new Vector<>();
+        Vector<String> nameto = new Vector<>();
 
         @Override                                                               
         protected void setup(Mapper<LongWritable, Text, Text, Text>.Context context) throws IOException, InterruptedException {
+
+            nameFrom.add("Lily Potter");nameto.add("Lily");
+            nameFrom.add("James Potter");nameto.add("James");
+            nameFrom.add("Harry Potter");nameto.add("Harry");
+            nameFrom.add("Potter");nameto.add("Harry");
+
+
             URI[] cacheFiles = context.getCacheFiles();
             if(cacheFiles == null || cacheFiles.length <= 0){
                 System.out.println("cacheFiles is null");
@@ -43,17 +51,33 @@ public class Task1Mapper extends Mapper<LongWritable, Text, Text, Text> {
             String line;
             while ((line = bufferedReader.readLine()) != null){
                 String[] names = line.split(" ");
-                if(names[0].equals("Professor") && names.length > 1){
-                    //将Professor删掉，后面的名字前移
-                    for(int i = 0; i < names.length - 1; i++){
-                        names[i] = names[i + 1];
-                    }
-                    //将最后一个名字置空
-                    names[names.length - 1] = "";
+                if(names[0].equals("Professor") && names.length > 1)
+                {
+                    //删掉line中的Professor
+                    line = line.substring(10);
                 }
+                if(names[0].equals("Mr") && names.length > 1)
+                {
+                    //删掉line中的Mr
+                    line = line.substring(3);
+                }
+                if(names[0].equals("Madam") && names.length > 1)
+                {
+                    //删掉line中的Madam
+                    line = line.substring(6);
+                }
+                if(names[0].equals("Sir") && names.length > 1)
+                {
+                    //删掉line中的Sir
+                    line = line.substring(4);
+                }
+                names = line.split(" ");
                 singleNames.add(names[0]);
                 if(names.length > 1){
-                    fullNames.add(line);
+                    nameFrom.add(line);
+                    nameto.add(names[0]);
+                    nameFrom.add(names[1]);
+                    nameto.add(names[0]);
                 }
             }
         }
@@ -63,17 +87,16 @@ public class Task1Mapper extends Mapper<LongWritable, Text, Text, Text> {
             String text = value.toString();
             //获取这个文件的文件名，并于这个文段的编号连接，作为key
             String fileName = ((FileSplit) context.getInputSplit()).getPath().getName();
+            if(fileName.contains("person_name_list"))return;
             String keyStr = fileName + "#" + key.toString();
 
-            text.replace("Lily Potter", "Lily");
-            text.replace("James Potter", "James");
-            text.replace("Harry Potter", "Harry");
-            text.replace("Potter", "Harry");
+            //将text中所有的符号替换为空格，除了-
+            text = text.replaceAll("[^a-zA-Z0-9-]", " ");
+            //将text中连续的空格替换为一个空格
+            text = text.replaceAll("\\s+", " ");
 
-            for(String LongName : fullNames){
-                String[] names = LongName.split(" ");
-                text.replace(LongName, names[0]); 
-                text.replace(names[1], names[0]);
+            for(int i = 0; i < nameFrom.size(); i++){
+                text = text.replaceAll(nameFrom.get(i), nameto.get(i));
             }
 
             StringTokenizer st = new StringTokenizer(text);
